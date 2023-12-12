@@ -19,7 +19,7 @@ function App() {
 
     </BrowserRouter>
     </NoteState>
-  );
+  )
 }
 
 export default App;
