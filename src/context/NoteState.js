@@ -10,8 +10,8 @@ const NoteState = (props) => {
         "tag": "personal",
         "date": "2023-12-12T07:45:31.638Z",
         "__v": 0
-      },
-      {
+    },
+    {
         "_id": "65780fc02b6d0261668cedcf",
         "user": "6507730966e4e83f282564f6",
         "title": "50th Note",
@@ -19,8 +19,8 @@ const NoteState = (props) => {
         "tag": "personal",
         "date": "2023-12-12T07:46:08.136Z",
         "__v": 0
-      },
-      {
+    },
+    {
         "_id": "657859d3bc8fe3add0034eb9",
         "user": "6507730966e4e83f282564f6",
         "title": "Grocery Shopping List",
@@ -28,8 +28,8 @@ const NoteState = (props) => {
         "tag": "groceries",
         "date": "2023-12-12T13:02:11.199Z",
         "__v": 0
-      },
-      {
+    },
+    {
         "_id": "657859ddbc8fe3add0034ebb",
         "user": "6507730966e4e83f282564f6",
         "title": "Meeting Notes - Team Project Update",
@@ -37,8 +37,8 @@ const NoteState = (props) => {
         "tag": "meeting",
         "date": "2023-12-12T13:02:21.670Z",
         "__v": 0
-      },
-      {
+    },
+    {
         "_id": "657859eabc8fe3add0034ebd",
         "user": "6507730966e4e83f282564f6",
         "title": "Ideas for Blog Post Topics",
@@ -46,8 +46,8 @@ const NoteState = (props) => {
         "tag": "blogging",
         "date": "2023-12-12T13:02:34.469Z",
         "__v": 0
-      },
-      {
+    },
+    {
         "_id": "657859f9bc8fe3add0034ebf",
         "user": "6507730966e4e83f282564f6",
         "title": "Reminder - Pay Phone Bill",
@@ -55,8 +55,8 @@ const NoteState = (props) => {
         "tag": "bill",
         "date": "2023-12-12T13:02:49.269Z",
         "__v": 0
-      },
-      {
+    },
+    {
         "_id": "657859fdbc8fe3add0034ec1",
         "user": "6507730966e4e83f282564f6",
         "title": "Book Recommendation: The Alchemist by Paulo Coelho",
@@ -64,12 +64,37 @@ const NoteState = (props) => {
         "tag": "book",
         "date": "2023-12-12T13:02:53.836Z",
         "__v": 0
-      }]
+    }]
 
-const [notes, setNotes] = useState(notesInitial);
+    const [notes, setNotes] = useState(notesInitial);
+
+    // Add a Note
+    const addNote = (title, description, tag) => {
+        const note = {
+            "_id": "65780f9b2b6d0261668cedcc",
+            "user": "6507730966e4e83f282564f6",
+            "title": title,
+            "description": description,
+            "tag": tag,
+            "date": "2023-12-12T07:45:31.638Z",
+            "__v": 0
+        }
+        setNotes(notes.concat(note))
+
+    }
+    // Delete a Note
+    const deleteNote = (id) => {
+        //   console.log("Deleteing the note with id" + id);
+          const newNote = notes.filter((note) => {return note._id!==id})
+          setNotes(newNote);
+        }
+    // Edit a Note
+    const editNote = (id, title, description, tag) => {
+        
+    }
 
     return (
-        <NoteContext.Provider value={{notes, setNotes}}>
+        <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote }}>
             {props.children}
         </NoteContext.Provider>
     )
