@@ -16,7 +16,7 @@ try {
 });
 
 // Route 2:  Add a new note:  post "/api/auth/addnotes". Require Auth
-router.get('/addnotes', fetchuser,[
+router.post('/addnotes', fetchuser,[
     body('title', 'Enter a valid title').isLength({min:3}),
     body('description', 'Enter a valid description').isLength({min:5})
 ], async(req, res)=> {

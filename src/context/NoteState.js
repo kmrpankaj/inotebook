@@ -2,99 +2,84 @@ import NoteContext from "./noteContext";
 import { useState } from "react";
 
 const NoteState = (props) => {
-    const notesInitial = [{
-        "_id": "65780f9b2b6d0261668cedcc",
-        "user": "6507730966e4e83f282564f6",
-        "title": "50th Note",
-        "description": "This is a second cool.",
-        "tag": "personal",
-        "date": "2023-12-12T07:45:31.638Z",
-        "__v": 0
-    },
-    {
-        "_id": "65780fc02b6d0261668cedcf",
-        "user": "6507730966e4e83f282564f6",
-        "title": "50th Note",
-        "description": "This is a second cool.",
-        "tag": "personal",
-        "date": "2023-12-12T07:46:08.136Z",
-        "__v": 0
-    },
-    {
-        "_id": "657859d3bc8fe3add0034eb9",
-        "user": "6507730966e4e83f282564f6",
-        "title": "Grocery Shopping List",
-        "description": "Milk, eggs, bread, bananas, apples, potatoes, onions, carrots, broccoli, cheese.",
-        "tag": "groceries",
-        "date": "2023-12-12T13:02:11.199Z",
-        "__v": 0
-    },
-    {
-        "_id": "657859ddbc8fe3add0034ebb",
-        "user": "6507730966e4e83f282564f6",
-        "title": "Meeting Notes - Team Project Update",
-        "description": "Discussed progress on website development, marketing strategy, and budget. Scheduled follow-up meeting for next week.",
-        "tag": "meeting",
-        "date": "2023-12-12T13:02:21.670Z",
-        "__v": 0
-    },
-    {
-        "_id": "657859eabc8fe3add0034ebd",
-        "user": "6507730966e4e83f282564f6",
-        "title": "Ideas for Blog Post Topics",
-        "description": "Sustainable living tips, vegan recipes, travel adventures, book reviews, productivity hacks travel adventures, book reviews.",
-        "tag": "blogging",
-        "date": "2023-12-12T13:02:34.469Z",
-        "__v": 0
-    },
-    {
-        "_id": "657859f9bc8fe3add0034ebf",
-        "user": "6507730966e4e83f282564f6",
-        "title": "Reminder - Pay Phone Bill",
-        "description": "Due date: December 15th. Payment amount: $89.99.",
-        "tag": "bill",
-        "date": "2023-12-12T13:02:49.269Z",
-        "__v": 0
-    },
-    {
-        "_id": "657859fdbc8fe3add0034ec1",
-        "user": "6507730966e4e83f282564f6",
-        "title": "Book Recommendation: The Alchemist by Paulo Coelho",
-        "description": "Inspirational story about following your dreams. Highly recommend!",
-        "tag": "book",
-        "date": "2023-12-12T13:02:53.836Z",
-        "__v": 0
-    }]
+    const host = "http://localhost:3002"
+    const notesInitial = []
 
     const [notes, setNotes] = useState(notesInitial);
 
-    // Add a Note
-    const addNote = (title, description, tag) => {
-        const note = {
-            "_id": "65780f9b2b6d0261668cedcc",
-            "user": "6507730966e4e83f282564f6",
-            "title": title,
-            "description": description,
-            "tag": tag,
-            "date": "2023-12-12T07:45:31.638Z",
-            "__v": 0
-        }
-        setNotes(notes.concat(note))
+    // Get all Notes
+    const getNotes = async () => {
+        // API call
+        const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU3ODBmNjcyYjZkMDI2MTY2OGNlZGM5In0sImlhdCI6MTcwMjY3OTI1Mn0.-N0NiCVr9ugYOsa9yoNS5iW1qtNDxorx2uxyqu6wRAY"
+            }
+        });
+        const json = await response.json()
+        setNotes(json)
 
     }
+
+    //Add a note
+    const addNote = async (title, description, tag) => {
+        // API call
+        const response = await fetch(`${host}/api/notes/addnotes`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU3ODBmNjcyYjZkMDI2MTY2OGNlZGM5In0sImlhdCI6MTcwMjY3OTI1Mn0.-N0NiCVr9ugYOsa9yoNS5iW1qtNDxorx2uxyqu6wRAY"
+            },
+            body: JSON.stringify({title, description, tag})
+            
+        });
+        const note = await response.json();
+        setNotes(notes.concat(note))
+    }
+
     // Delete a Note
-    const deleteNote = (id) => {
+    const deleteNote = async (id) => {
+        // API call
+        const response = await fetch(`${host}/api/notes/deletenotes/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU3ODBmNjcyYjZkMDI2MTY2OGNlZGM5In0sImlhdCI6MTcwMjY3OTI1Mn0.-N0NiCVr9ugYOsa9yoNS5iW1qtNDxorx2uxyqu6wRAY"
+            }
+        });
+        const json = await response.json()
         //   console.log("Deleteing the note with id" + id);
-          const newNote = notes.filter((note) => {return note._id!==id})
-          setNotes(newNote);
-        }
+        const newNote = notes.filter((note) => { return note._id !== id })
+        setNotes(newNote);
+    }
     // Edit a Note
-    const editNote = (id, title, description, tag) => {
-        
+    const editNote = async (id, title, description, tag) => {
+        //ToDo: Api Call
+
+        const response = await fetch(`${host}/api/notes/updatenotes/${id}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjU3ODBmNjcyYjZkMDI2MTY2OGNlZGM5In0sImlhdCI6MTcwMjM2NzExM30.wg-uovkP4C1loqmcmvGsZvrq4FqNzrsHIi69AraGggM"
+            },
+            body: JSON.stringify({ title, description, tag })
+        });
+
+        //Logic to edit in client
+        for (let index = 0; index < notes.length; index++) {
+            const element = notes[index];
+            if (element._id === id) {
+                element.title = title;
+                element.description = description;
+                element.tag = tag;
+
+            }
+        }
     }
 
     return (
-        <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote }}>
+        <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
             {props.children}
         </NoteContext.Provider>
     )
