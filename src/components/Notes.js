@@ -14,11 +14,9 @@ const Notes = () => {
     const [note, setNote] = useState({id: "", etitle: "", edescription: "", etag: ""})
     const updateNote = (currentNote) => {
         document.getElementById('my_modal_3').showModal()
-        console.log('hi')
         setNote({id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag})
     }
     const handleClick = (e) => {
-        console.log('updating the note..', note)
         editNote(note.id, note.etitle, note.edescription, note.etag)
         ref.current.click();
     }
@@ -33,7 +31,6 @@ const Notes = () => {
         <>
         <AddNote />
         {/* Update Note Modal */}
-        <button className="btn" onClick={()=>document.getElementById('my_modal_3').showModal()}>open modal</button>
             <dialog id="my_modal_3" className="modal">
                 <div className="modal-box">
                     <form method="dialog">
@@ -44,7 +41,7 @@ const Notes = () => {
                     <div className="float-none">
                         <input value={note.etitle} type="text" id="etitle" name="etitle" onChange={onChange} placeholder="Enter a title" className="block my-2 input input-bordered input-primary w-full max-w-xs" />
                         <input value={note.etag} type="text" id="etag" name="etag" onChange={onChange} placeholder="Add a tag" className="block my-2 input input-bordered input-primary w-full max-w-xs" />
-                        <textarea value={note.edescription} onChange={onChange} id="edescription" name="edescription" className="block textarea textarea-bordered" placeholder="Note"></textarea>
+                        <textarea value={note.edescription} onChange={onChange} id="edescription" name="edescription" className="block my-2 textarea textarea-primary w-full max-w-xs" placeholder="Note"></textarea>
                     </div>
                     <button onClick={handleClose} className="btn btn-secondary flex justify-between my-2">Cancel</button>
                     <button type="Submit" onClick={handleClick} className="btn btn-primary flex justify-between my-2">Update</button>
@@ -52,15 +49,17 @@ const Notes = () => {
             </dialog>
         {/* Update Note Modal */}
             <h2 className="text-3xl font-extrabold dark:text-black">Your notes</h2>
-            <div className='container grid grid-cols-3 mx-auto p-4 max-w-screen-xl'>
+            {/* <div className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical"> */}
+            <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
 
 
-                {notes.map((note) => {
+                {notes.map((note, index) => {
                     return (
-                        <Noteitem key={note._id} note={note} updateNote={updateNote} />
+                        <Noteitem key={note._id} note={note} updateNote={updateNote} index={index} />
                     )
                 })}
-            </div>
+                </ul>
+            {/* </div> */}
         </>
     )
 }
