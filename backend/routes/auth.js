@@ -14,6 +14,7 @@ router.post('/createuser',[
     body('password', 'Enter a valid password').isLength({min:5})
 
 ], async(req, res)=> {
+    let success = false
     // if there are errors return bad requests
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -64,13 +65,15 @@ router.post('/login',[
     }
     const passwordCompare = await bcrypt.compare(password, user.password);
     if(!passwordCompare){
-        return res.status(400).json({error: "Try a correct credentials"});
+        success = false
+        return res.status(400).json({success, error: "Try a correct credentials"});
     }
     const payload = {
         user: {id: user.id} 
     }
     const authToken = jwt.sign(payload, JWT_SECRET);
-    res.json({authToken});
+    success = true
+    res.json({success, authToken});
  } catch(error) {
     console.error(error.message);
     res.status(500).send("Internal server error");

@@ -2,12 +2,19 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import noteContext from "../context/noteContext";
 import Noteitem from './Noteitem';
 import AddNote from './AddNote';
+import { useNavigate } from 'react-router-dom';
 
 const Notes = () => {
     const context = useContext(noteContext);
+    let history = useNavigate();
     const { notes, getNotes, editNote } = context;
     useEffect(() => {
-      getNotes()
+        if(localStorage.getItem('token')){
+            getNotes()
+        } else {
+            history("/login")
+        }
+
     }, [])
 
     const ref=useRef(null)
@@ -41,7 +48,7 @@ const Notes = () => {
                     <div className="float-none">
                         <input value={note.etitle} type="text" id="etitle" name="etitle" onChange={onChange} placeholder="Enter a title" className="block my-2 input input-bordered input-primary w-full max-w-xs" />
                         <input value={note.etag} type="text" id="etag" name="etag" onChange={onChange} placeholder="Add a tag" className="block my-2 input input-bordered input-primary w-full max-w-xs" />
-                        <textarea value={note.edescription} onChange={onChange} id="edescription" name="edescription" className="block my-2 textarea textarea-primary w-full max-w-xs" placeholder="Note"></textarea>
+                        <textarea value={note.edescription} onChange={onChange} id="edescription" name="edescription" className="block my-2 textarea textarea-primary w-full max-w-xs text-base" placeholder="Note"></textarea>
                     </div>
                     <button onClick={handleClose} className="btn btn-secondary flex justify-between my-2">Cancel</button>
                     <button type="Submit" onClick={handleClick} className="btn btn-primary flex justify-between my-2">Update</button>
@@ -52,13 +59,14 @@ const Notes = () => {
             {/* <div className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical"> */}
             <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
 
-
+                
                 {notes.map((note, index) => {
                     return (
                         <Noteitem key={note._id} note={note} updateNote={updateNote} index={index} />
                     )
                 })}
                 </ul>
+          
             {/* </div> */}
         </>
     )
