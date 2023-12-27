@@ -59,7 +59,7 @@ const Notes = () => {
             {/* <div className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical"> */}
             <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
 
-                
+                {notes.length === 0 && 'No Notes to display'}
                 {notes.map((note, index) => {
                     return (
                         <Noteitem key={note._id} note={note} updateNote={updateNote} index={index} />

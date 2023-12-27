@@ -1,7 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Navbar() {
+    let history = useNavigate();
+    const handleLogout = (e) => {
+        //e.preventDefault();
+        localStorage.removeItem('token');
+        history('/login')
+    }
   return (
 <>
     <nav className="bg-gray-800">
@@ -23,12 +29,16 @@ function Navbar() {
             <li>
             <Link to="/about" className="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</Link>
             </li>
+            {!localStorage.getItem('token')?<>
             <li>
             <Link role="button" to="/login" className="btn">Login</Link>
             </li>
             <li>
-            <Link role="button" to="signup" className="btn">Signup</Link>
-            </li>
+            <Link role="button" to="/signup" className="btn">Signup</Link>
+            </li> </> :
+            <li>
+            <Link role="button" onClick={handleLogout} to="/login" className="btn">Logout</Link>
+            </li>}
         </ul>
 
         </div>

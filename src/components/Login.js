@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = (props) => {
     const [credentials, setCredentials] = useState({email: "", password: ""})
@@ -15,10 +15,9 @@ const Login = (props) => {
             body: JSON.stringify({email: credentials.email, password: credentials.password})
         });
         const json = await response.json()
-        console.log(json)
         if(json.success) {
             // Save the auth token and redirect
-            localStorage.setItem('token', json.authtoken)
+            localStorage.setItem('token', json.authToken)
             history("/")
         } else {
             alert('Invalid credentials')
@@ -83,7 +82,7 @@ const Login = (props) => {
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Not a member?{' '}
-                        <a href="/signup" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Signup</a>
+                        <Link to="/signup" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Signup</Link>
                     </p>
                 </div>
             </div>
